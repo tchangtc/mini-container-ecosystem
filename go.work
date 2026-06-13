@@ -1,0 +1,8 @@
+go 1.26.3
+
+use (
+	./mini-nerdctl
+	./mini-containerd
+	./mini-docker
+	./mini-kueue
+)
