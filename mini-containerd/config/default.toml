@@ -1,0 +1,36 @@
+# mini-containerd configuration (TOML)
+# Default location: /etc/mini-containerd/config.toml
+
+# Root directory for all containerd state
+root = "/var/lib/mini-containerd"
+
+# gRPC API server
+[grpc]
+  address = "/run/mini-containerd/containerd.sock"
+  max_recv_message_size = 16777216
+  max_send_message_size = 16777216
+
+# Content store — blob storage
+[content]
+  root = "/var/lib/mini-containerd/content"
+
+# Snapshotter — overlayfs
+[snapshot]
+  root = "/var/lib/mini-containerd/snapshot"
+  type = "overlayfs"
+
+# Task runtime
+[task]
+  # cgroup parent for all containers
+  cgroup_parent = "/mini-containerd"
+
+# Image registry defaults
+[registry]
+  [registry.mirrors]
+    [registry.mirrors."docker.io"]
+      endpoint = ["https://registry-1.docker.io"]
+
+# Debug/logging
+[debug]
+  level = "info"
+  format = "text"

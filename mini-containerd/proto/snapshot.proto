@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package mini.containerd.v1;
+
+option go_package = "github.com/tcherry/mini-container-ecosystem/mini-containerd/api/snapshot;snapshotpb";
+
+// Snapshot service — manages overlayfs layer snapshots (Phase 2.3)
+service Snapshot {
+    // Prepare creates a new active snapshot from a parent.
+    rpc Prepare(PrepareRequest) returns (PrepareResponse);
+    // Commit freezes an active snapshot into a read-only layer.
+    rpc Commit(CommitRequest) returns (CommitResponse);
+    // Mount mounts a snapshot to a target path.
+    rpc Mount(MountRequest) returns (MountResponse);
+    // Unmount unmounts a snapshot.
+    rpc Unmount(UnmountRequest) returns (UnmountResponse);
+    // Remove deletes a snapshot.
+    rpc Remove(RemoveRequest) returns (RemoveResponse);
+    // List returns all snapshots.
+    rpc List(ListRequest) returns (ListResponse);
+}
+
+message PrepareRequest {
+    string key = 1;      // unique identifier for this snapshot
+    string parent = 2;   // optional parent snapshot key
+}
+
+message PrepareResponse {
+    string mount_path = 1;  // where the snapshot is mounted
+}
+
+message CommitRequest {
+    string key = 1;       // snapshot to commit
+    string name = 2;      // name for the committed snapshot
+}
+
+message CommitResponse {
+    string digest = 1;    // content hash of the committed layer
+}
+
+message MountRequest {
+    string key = 1;
+    string target = 2;    // mount target path
+}
+
+message MountResponse {}
+
+message UnmountRequest {
+    string key = 1;
+    string target = 2;
+}
+
+message UnmountResponse {}
+
+message RemoveRequest {
+    string key = 1;
+}
+
+message RemoveResponse {}
+
+message ListRequest {}
+
+message SnapshotInfo {
+    string key = 1;
+    string parent = 2;
+    string kind = 3;      // "active" or "committed"
+    int64 inodes = 4;
+    int64 size = 5;
+}
+
+message ListResponse {
+    repeated SnapshotInfo snapshots = 1;
+}

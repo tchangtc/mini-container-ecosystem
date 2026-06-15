@@ -6,8 +6,8 @@
 
 | 组件 | 对标项目 | 真实代码量 | Mini 保留 | 难度 | 工期 |
 |------|---------|-----------|----------|------|------|
-| [mini-nerdctl](./mini-nerdctl/) | nerdctl (779 文件) | 30+ 命令, 65 包 | 8 命令, ~20 包 | ⭐⭐ | 3 周 |
-| [mini-containerd](./mini-containerd/) | containerd (5,280 文件) | 16 gRPC 服务, 插件系统 | 5 服务, BoltDB | ⭐⭐⭐⭐⭐ | 4-6 月 |
+| [mini-nerdctl](./mini-nerdctl/) | nerdctl (779 文件) | 30+ 命令, 65 包 | 8 命令, ~20 包 | ⭐⭐ | ✅ |
+| [mini-containerd](./mini-containerd/) | containerd (5,280 文件) | 16 gRPC 服务, 插件系统 | 10 服务, ~2,700 行 | ⭐⭐⭐⭐⭐ | ✅ |
 | [mini-docker](./mini-docker/) | Docker Engine | 完整引擎 | Builder + REST + Network | ⭐⭐⭐⭐ | 2-3 月 |
 | [mini-kueue](./mini-kueue/) | kueue (8,811 文件) | 10 CRD, 10+ Job 集成 | 4 CRD, 1 Job, FIFO | ⭐⭐⭐ | 2-3 月 |
 | [mini-kubepray](./mini-kubepray/) | kubespray (28 Roles) | 多引擎多CNI | containerd+Flannel | ⭐ | 2-3 周 |

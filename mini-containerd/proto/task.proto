@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package mini.containerd.v1;
+
+option go_package = "github.com/tcherry/mini-container-ecosystem/mini-containerd/api/task;taskpb";
+
+// Task service — manages container process lifecycle (Phase 2.4)
+service Task {
+    // Create creates a new task (container process).
+    rpc Create(CreateRequest) returns (CreateResponse);
+    // Start begins execution of a created task.
+    rpc Start(StartRequest) returns (StartResponse);
+    // Kill sends a signal to a task.
+    rpc Kill(KillRequest) returns (KillResponse);
+    // Wait blocks until the task exits and returns the exit status.
+    rpc Wait(WaitRequest) returns (WaitResponse);
+    // Exec runs a command inside an existing container.
+    rpc Exec(ExecRequest) returns (stream ExecResponse);
+}
+
+message CreateRequest {
+    string id = 1;
+    bytes spec = 2;         // OCI runtime spec JSON
+    string rootfs = 3;      // path to rootfs (from snapshotter)
+}
+
+message CreateResponse {
+    uint32 pid = 1;
+}
+
+message StartRequest {
+    string id = 1;
+}
+
+message StartResponse {}
+
+message KillRequest {
+    string id = 1;
+    int32 signal = 2;       // e.g. 9 (SIGKILL), 15 (SIGTERM)
+}
+
+message KillResponse {}
+
+message WaitRequest {
+    string id = 1;
+}
+
+message WaitResponse {
+    int32 exit_code = 1;
+    int64 exited_at = 2;
+}
+
+message ExecRequest {
+    string id = 1;
+    repeated string args = 2;
+    repeated string env = 3;
+    string work_dir = 4;
+    bool tty = 5;
+    bytes stdin = 6;
+}
+
+message ExecResponse {
+    oneof output {
+        bytes stdout = 1;
+        bytes stderr = 2;
+    }
+    int32 exit_code = 3;    // sent in final message
+}

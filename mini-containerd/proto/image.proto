@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package mini.containerd.v1;
+
+option go_package = "github.com/tcherry/mini-container-ecosystem/mini-containerd/api/image;imagepb";
+
+// Image service — manages OCI images (Phase 2.2)
+service Image {
+    // Pull downloads an image from a registry.
+    rpc Pull(PullRequest) returns (stream PullResponse);
+    // Get returns image metadata.
+    rpc Get(GetRequest) returns (GetResponse);
+    // List returns all stored images.
+    rpc List(ListRequest) returns (ListResponse);
+    // Delete removes an image (and optionally its layers).
+    rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
+
+message PullRequest {
+    string name = 1;         // e.g. "docker.io/library/alpine:latest"
+    string registry = 2;     // registry host, e.g. "docker.io"
+}
+
+message PullResponse {
+    string status = 1;       // "resolving", "downloading", "unpacking", "complete"
+    string layer = 2;        // current layer digest
+    int64 downloaded = 3;    // bytes downloaded
+    int64 total = 4;         // total bytes
+}
+
+message GetRequest {
+    string name = 1;
+}
+
+message GetResponse {
+    string name = 1;
+    string manifest_digest = 2;
+    string config_digest = 3;
+    repeated string layers = 4;  // ordered layer digests
+    int64 size = 5;
+    int64 created_at = 6;
+}
+
+message ListRequest {}
+
+message ListResponse {
+    repeated GetResponse images = 1;
+}
+
+message DeleteRequest {
+    string name = 1;
+}
+
+message DeleteResponse {}
