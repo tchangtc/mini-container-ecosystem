@@ -1,0 +1,19 @@
+# mini-kubepray inventory — copy to hosts.ini and fill in your node IPs
+
+# Control plane node (runs kube-apiserver, etcd, controller-manager, scheduler)
+CONTROL_PLANE_NODES="192.168.1.10"
+
+# Worker nodes
+WORKER_NODES="192.168.1.11 192.168.1.12"
+
+# Kubernetes version
+K8S_VERSION="1.29.0"
+
+# Pod network CIDR (for CNI)
+POD_CIDR="10.244.0.0/16"
+
+# Service CIDR
+SVC_CIDR="10.96.0.0/12"
+
+# Container runtime: containerd | cri-dockerd
+CONTAINER_RUNTIME="containerd"
